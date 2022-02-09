@@ -2,92 +2,99 @@ package Torres.Felipe.calculadora
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.view.View
 import android.widget.Button
 import android.widget.TextView
 
+
 class MainActivity : AppCompatActivity() {
-    var num1: Int = 0
-    var num2: Int = 0
+    var num1: Double = 0.0
+    lateinit var txt_num1: TextView
+    lateinit var txt_num2: TextView
     var operacion: Int = 0
-    val txt_calcular: TextView = findViewById(R.id.Text_Calcular)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        val txt_respuesta: TextView = findViewById(R.id.Text_Respuesta)
+        txt_num1 = findViewById(R.id.Text_Respuesta)
+        txt_num2 = findViewById(R.id.Text_Calcular)
 
-        val button_numero0: Button = findViewById(R.id.btn_Numero0)
-        val button_numero1: Button = findViewById(R.id.btn_Numero1)
-        val button_numero2: Button = findViewById(R.id.btn_Numero2)
-        val button_numero3: Button = findViewById(R.id.btn_Numero3)
-        val button_numero4: Button = findViewById(R.id.btn_Numero4)
-        val button_numero5: Button = findViewById(R.id.btn_Numero5)
-        val button_numero6: Button = findViewById(R.id.btn_Numero6)
-        val button_numero7: Button = findViewById(R.id.btn_Numero7)
-        val button_numero8: Button = findViewById(R.id.btn_Numero8)
-        val button_numero9: Button = findViewById(R.id.btn_Numero9)
-
-        val button_sumar: Button = findViewById(R.id.btn_Sumar)
-        val button_multiplicar: Button = findViewById(R.id.btn_Multiplicar)
-        val button_restar: Button = findViewById(R.id.btn_Restar)
-        val button_dividir: Button = findViewById(R.id.btn_Dividir)
         val button_resultado: Button = findViewById(R.id.btn_Resultado)
         val button_borrar: Button = findViewById(R.id.btn_Borrar)
 
-        button_numero0.setOnClickListener(){numeroPresionado("0")}
-        button_numero1.setOnClickListener(){numeroPresionado("1")}
-        button_numero2.setOnClickListener(){numeroPresionado("2")}
-        button_numero3.setOnClickListener(){numeroPresionado("3")}
-        button_numero4.setOnClickListener(){numeroPresionado("4")}
-        button_numero5.setOnClickListener(){numeroPresionado("5")}
-        button_numero6.setOnClickListener(){numeroPresionado("6")}
-        button_numero7.setOnClickListener(){numeroPresionado("7")}
-        button_numero8.setOnClickListener(){numeroPresionado("8")}
-        button_numero9.setOnClickListener(){numeroPresionado("9")}
+        button_resultado.setOnClickListener{
+            var num2: Double = txt_num2.text.toString().toDouble()
+            var resultado: Double = 0.0
 
-        button_sumar.setOnClickListener(){operacionPresionada(SUMA)}
-        button_restar.setOnClickListener(){operacionPresionada(RESTA)}
-        button_multiplicar.setOnClickListener(){operacionPresionada(MULTIPLICACION)}
-        button_dividir.setOnClickListener(){operacionPresionada(DIVISION)}
-
-        button_borrar.setOnClickListener(){
-            num1 = 0
-            num2 = 0
-            txt_respuesta.text = "0"
-            this.operacion = NO_OPERACION
-        }
-        button_resultado.setOnClickListener(){
-            var resultado = when(operacion){
-                SUMA -> num1 + num2
-                RESTA -> num1 - num2
-                MULTIPLICACION -> num1 * num2
-                DIVISION -> num1 / num2
-                else -> 0
+            when(operacion){
+                1 -> resultado = num1 + num2
+                2 -> resultado = num1 - num2
+                3 -> resultado = num1 * num2
+                4 -> resultado = num1 / num2
             }
 
-            txt_respuesta.text = resultado.toString()
-        }
-    }
-
-    fun numeroPresionado(numero: String){
-        txt_calcular.text = "${txt_calcular.text}$numero"
-
-        if(operacion == NO_OPERACION){
-            num1 = txt_calcular.text.toString().toInt()
-        }else {
-            num2 = txt_calcular.text.toString().toInt()
+            txt_num1.setText(resultado.toString())
+            txt_num1.setText("")
         }
 
+        button_borrar.setOnClickListener{
+            txt_num1.setText("")
+            txt_num2.setText("")
+            num1 = 0.0
+            operacion = 0
+
+        }
+
 
     }
 
-    fun operacionPresionada(operacion: Int){
-        this.operacion = operacion
+    fun numeroPresionado(view: View){
 
-        num1 = txt_calcular.text.toString().toInt()
+        var num2: String = txt_num2.text.toString()
 
-        txt_calcular.text = "0"
+        when(view.id) {
+            R.id.btn_Numero0 -> txt_num2.setText(num2 + "0")
+            R.id.btn_Numero1-> txt_num2.setText(num2 + "1")
+            R.id.btn_Numero2 -> txt_num2.setText(num2 + "2")
+            R.id.btn_Numero3 -> txt_num2.setText(num2 + "3")
+            R.id.btn_Numero4 -> txt_num2.setText(num2 + "4")
+            R.id.btn_Numero5 -> txt_num2.setText(num2 + "5")
+            R.id.btn_Numero6 -> txt_num2.setText(num2 + "6")
+            R.id.btn_Numero7 -> txt_num2.setText(num2 + "7")
+            R.id.btn_Numero8 -> txt_num2.setText(num2 + "8")
+            R.id.btn_Numero9 -> txt_num2.setText(num2 + "9")
+
+
+        }
+
+    }
+
+    fun operacionPresionada(view: View) {
+
+        num1 = txt_num2.text.toString().toDouble()
+        var numero2: String = txt_num2.text.toString()
+        txt_num2.setText("")
+        when (view.id) {
+
+            R.id.btn_Sumar -> {
+                txt_num2.setText(numero2 + "+")
+                operacion = SUMA
+            }
+            R.id.btn_Restar -> {
+                txt_num2.setText(numero2 + "-")
+                operacion = RESTA
+            }
+            R.id.btn_Multiplicar -> {
+                txt_num2.setText(numero2 + "*")
+                operacion = MULTIPLICACION
+            }
+            R.id.btn_Dividir -> {
+                txt_num2.setText(numero2 + "/")
+                operacion = DIVISION
+            }
+
+        }
     }
 
     companion object{
@@ -97,6 +104,4 @@ class MainActivity : AppCompatActivity() {
         const val DIVISION = 4
         const val NO_OPERACION = 0
     }
-
-
-}
+    }
